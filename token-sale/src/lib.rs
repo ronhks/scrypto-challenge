@@ -4,7 +4,8 @@ blueprint! {
     struct TokenSales {
         useful_tokens_vault: Vault,
         xrd_tokens_vault: Vault,
-        price_per_token: Decimal
+        price_per_token: Decimal,
+        seller_badge: ResourceDef,
     }
 
     impl TokenSales {
@@ -27,7 +28,8 @@ blueprint! {
             let component = Self {
                 useful_tokens_vault: Vault::with_bucket(bucket),
                 xrd_tokens_vault: Vault::new(RADIX_TOKEN),
-                price_per_token: price_per_token 
+                price_per_token: price_per_token,
+                seller_badge: seller_badge.resource_def(),
             }
             .instantiate()
             .globalize();
@@ -44,10 +46,11 @@ blueprint! {
         // pub fn withdraw_funds(&mut self, amount: Decimal) -> Bucket {
         //     // Your `withdraw_funds` implementation goes here.
         // }
-  
-        // pub fn change_price(&mut self, price: Decimal) {
-        //     // Your `change_price` implementation goes here.
-        // }
+
+        #[auth(seller_badge)]
+        pub fn change_price(&mut self, price: Decimal) {
+            self.price_per_token = price
+        }
  
     }
 }
