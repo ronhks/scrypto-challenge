@@ -5,6 +5,7 @@ blueprint! {
         useful_tokens_vault: Vault,
         xrd_tokens_vault: Vault,
         price_per_token: Decimal,
+        seller_badge: ResourceAddress,
     }
 
     impl TokenSales {
@@ -33,6 +34,7 @@ blueprint! {
                 useful_tokens_vault: Vault::with_bucket(bucket),
                 xrd_tokens_vault: Vault::new(RADIX_TOKEN),
                 price_per_token: price_per_token,
+                seller_badge: seller_badge.resource_address(),
             }
             .instantiate()
             .add_access_check(access_rules)
